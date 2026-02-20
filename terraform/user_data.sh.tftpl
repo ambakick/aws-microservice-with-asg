@@ -1,0 +1,52 @@
+#!/bin/bash
+set -euxo pipefail
+exec > >(tee /var/log/user-data.log | logger -t user-data -s 2>/dev/console) 2>&1
+
+REGION="${region}"
+ACCOUNT_ID="${account_id}"
+ECR_REGISTRY="${account_id}.dkr.ecr.${region}.amazonaws.com"
+
+apt-get update -y
+apt-get install -y docker.io curl unzip
+systemctl enable --now docker
+
+cd /tmp
+curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o awscliv2.zip
+unzip -q -o awscliv2.zip
+./aws/install --update
+
+mkdir -p /usr/local/lib/docker/cli-plugins
+curl -fsSL "https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64" \
+  -o /usr/local/lib/docker/cli-plugins/docker-compose
+chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+if ! docker compose version >/dev/null 2>&1; then
+  curl -fsSL "https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64" \
+    -o /usr/local/bin/docker-compose
+  chmod +x /usr/local/bin/docker-compose
+fi
+
+aws ecr get-login-password --region "${region}" | docker login --username AWS --password-stdin "${account_id}.dkr.ecr.${region}.amazonaws.com"
+
+mkdir -p /opt/microservices
+cat >/opt/microservices/docker-compose.yml <<'YAML'
+version: "3.8"
+services:
+  service1:
+    image: ${account_id}.dkr.ecr.${region}.amazonaws.com/${service1_repo_name}:latest
+    ports:
+      - "5000:5000"
+    restart: always
+  service2:
+    image: ${account_id}.dkr.ecr.${region}.amazonaws.com/${service2_repo_name}:latest
+    ports:
+      - "5001:5001"
+    restart: always
+YAML
+
+cd /opt/microservices
+if docker compose version >/dev/null 2>&1; then
+  docker compose up -d
+else
+  docker-compose up -d
+fi
