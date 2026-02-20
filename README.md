@@ -203,7 +203,7 @@ python3 servers/verify_endpoints.py <alb-dns> <region>
 
 ## Screenshots (Output)
 ### 1) ECR repository images
-
+![ECR image 3](screenshots/1.%20ECR%20image%203.png)
 ![ECR image 1](screenshots/1.%20ECR%20image%201.png)
 ![ECR image 2](screenshots/1.%20ECR%20image%202.png)
 
