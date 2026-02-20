@@ -1,4 +1,4 @@
-# AWS Microservices Deployment (DevOps Interview Assessment)
+# AWS Microservices Deployment with ASG
 
 ## Overview
 This project deploys two containerized Flask microservices to AWS using:
@@ -93,7 +93,7 @@ From `servers/`:
 
 ```bash
 export AWS_REGION=us-east-1
-export AWS_ACCOUNT_ID=378834093760
+export AWS_ACCOUNT_ID=account_number
 
 aws ecr get-login-password --region "$AWS_REGION" \
 | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
@@ -125,7 +125,7 @@ curl -SL "https://github.com/docker/compose/releases/download/v2.27.0/docker-com
 chmod +x ~/.docker/cli-plugins/docker-compose
 
 aws ecr get-login-password --region us-east-1 \
-| docker login --username AWS --password-stdin 378834093760.dkr.ecr.us-east-1.amazonaws.com
+| docker login --username AWS --password-stdin account_number.dkr.ecr.us-east-1.amazonaws.com
 ```
 
 Create `/opt/microservices/docker-compose.yml`:
@@ -134,12 +134,12 @@ Create `/opt/microservices/docker-compose.yml`:
 version: "3.8"
 services:
   service1:
-    image: 378834093760.dkr.ecr.us-east-1.amazonaws.com/service1:latest
+    image: account_number.dkr.ecr.us-east-1.amazonaws.com/service1:latest
     ports:
       - "5000:5000"
     restart: always
   service2:
-    image: 378834093760.dkr.ecr.us-east-1.amazonaws.com/service2:latest
+    image: account_number.dkr.ecr.us-east-1.amazonaws.com/service2:latest
     ports:
       - "5001:5001"
     restart: always
