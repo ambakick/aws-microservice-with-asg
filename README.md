@@ -48,7 +48,7 @@ flowchart LR
   - `ec2-sg` for `22` (my IP) and app ports `5000/5001` from `alb-sg`
 - ALB:
   - Name: `microservices-alb`
-  - DNS: `microservices-alb-1788265787.us-east-1.elb.amazonaws.com`
+  - DNS: `alb_dns_name.us-east-1.elb.amazonaws.com`
 - Target groups:
   - `tg-service1` -> HTTP `5000`, health check `/health`
   - `tg-service2` -> HTTP `5001`, health check `/health`
@@ -186,7 +186,7 @@ Script path:
 - `servers/verify_endpoints.py`
 
 Default values in script:
-- `ALB_DNS = microservices-alb-1788265787.us-east-1.elb.amazonaws.com`
+- `ALB_DNS = alb_dns_name.us-east-1.elb.amazonaws.com`
 - `REGION = us-east-1`
 
 Run from repo root:
@@ -216,7 +216,7 @@ python3 servers/verify_endpoints.py <alb-dns> <region>
 Commands used:
 
 ```bash
-export ALB_DNS=microservices-alb-1788265787.us-east-1.elb.amazonaws.com
+export ALB_DNS=alb_dns_name.us-east-1.elb.amazonaws.com
 echo "$ALB_DNS"
 curl -s "http://$ALB_DNS/service1"
 curl -s "http://$ALB_DNS/service2"

@@ -11,7 +11,7 @@ This module provisions the bonus infrastructure with IaC:
 - Existing resources from core setup:
   - `tg-service1`
   - `tg-service2`
-  - EC2 security group (default: `sg-0e45d0e343ac66f64`)
+  - EC2 security group (set in `terraform.tfvars`)
   - IAM instance profile (default: `ec2-ecr-pull-role`)
   - ECR repos `service1` and `service2` with `latest` tags
 

@@ -7,7 +7,7 @@ variable "region" {
 variable "ami_id" {
   description = "AMI ID for Ubuntu 24.04 x86_64 instances in the selected region"
   type        = string
-  default     = "ami-0b6c6ebed2801a5cb"
+  default     = "" # Set in terraform.tfvars (e.g. Ubuntu 24.04 AMI for your region)
 }
 
 variable "service1_repo_name" {
@@ -43,16 +43,13 @@ variable "instance_profile_name" {
 variable "ec2_security_group_id" {
   description = "Security group ID for EC2 instances (e.g., ec2-sg)"
   type        = string
-  default     = "sg-0e45d0e343ac66f64"
+  default     = "" # Set in terraform.tfvars (your EC2 security group ID, e.g. ec2-sg)
 }
 
 variable "public_subnet_ids" {
   description = "Public subnet IDs for ASG instances"
   type        = list(string)
-  default = [
-    "subnet-0de3a6ed7747531b6",
-    "subnet-086be7b6483761a93"
-  ]
+  default = [] # Set in terraform.tfvars (your public subnet IDs for ASG)
 }
 
 variable "asg_name" {

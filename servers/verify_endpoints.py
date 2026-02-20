@@ -6,7 +6,7 @@ import sys
 import urllib.error
 import urllib.request
 
-DEFAULT_ALB_DNS = "microservices-alb-1788265787.us-east-1.elb.amazonaws.com"
+DEFAULT_ALB_DNS = "alb_dns_name.us-east-1.elb.amazonaws.com"
 DEFAULT_REGION = "us-east-1"
 
 
